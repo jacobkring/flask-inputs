@@ -19,6 +19,9 @@ class JsonSchema(object):
         try:
             jsonschema.validate(field.data, self.schema)
         except jsonschema.ValidationError as e:
+
+            if 'message' in e.schema:
+                raise ValidationError(e.schema['message'][e.validator])
             if self.message:
                 raise ValidationError(self.message)
 
